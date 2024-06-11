@@ -1,12 +1,14 @@
-import {Header,Footer} from './Components.jsx'
+import { Header, Card, Footer } from './Components.jsx'
 
 function App() {
   
   return(<>
 
-    <Header/>
-
-    <Footer/>
+    <Header />
+    <Card />
+    <Card />
+    <Card />
+    <Footer />
 
   </>);
 }

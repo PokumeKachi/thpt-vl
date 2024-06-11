@@ -16,13 +16,29 @@ function Header() {
   );
 }
 
+function Card(props) {
+  
+
+  return(
+    <div className='card'>
+
+      <img className='card-img' src='https://pbs.twimg.com/media/D3cGs3FXkAA6cWn.png' alt='profile picture' />
+
+      <h2 className='card-title'> Kachi </h2>
+
+      <p className='card-text'> I write code </p>
+
+    </div>
+  );
+}
+
 function Footer() {
   return(
     <footer>
 
       <p>
 
-        &copy; THPT VL
+        &copy; {new Date().getFullYear()} THPT VL 
 
       </p>
 
@@ -30,8 +46,4 @@ function Footer() {
   );
 }
 
-
-export {
-  Header,
-  Footer
-}
+export { Header, Card, Footer }
