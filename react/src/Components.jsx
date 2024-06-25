@@ -1,3 +1,5 @@
+import './Components.css';
+
 function Header() {
   return(
     <header>
@@ -46,4 +48,4 @@ function Footer() {
   );
 }
 
-export { Header, Card, Footer }
+export { Header, Card, Footer };

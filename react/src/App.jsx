@@ -1,4 +1,4 @@
-import { Header, Card, Footer } from './Components.jsx'
+import { Header, Card, Footer } from './Components.jsx';
 
 function App() {
   
@@ -13,4 +13,4 @@ function App() {
   </>);
 }
 
-export default App
+export default App;

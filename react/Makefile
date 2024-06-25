@@ -1,5 +1,5 @@
 all:
 	npm run dev
 
-buid:
+build:
 	npm run build
