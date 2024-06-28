@@ -1,26 +1,29 @@
 import './Components.css';
+import logo from './assets/logo.svg';
+
+function onLogoClick() {
+  console.log('clicked!');
+}
 
 function Header() {
   return(
-    <header>
+    <div className='header'>
 
-      <h1>THPT VL</h1>
-        
-      <nav>
-        <ul>
-          <li> <a href="#"> Home </a> </li>
-        </ul>
-      </nav>
+      <div className='left-header'>
+        nutnutnutnutnutnutnutnutnttntntntsjdknut
+      </div>
 
-      <hr/>
+      <button className='logo-button'/>
+      
+      <div className='right-header'>
+        balls
+      </div>
 
-    </header>
+    </div>
   );
 }
 
 function Card(props) {
-  
-
   return(
     <div className='card'>
 
