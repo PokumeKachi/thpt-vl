@@ -6,19 +6,13 @@ function onLogoClick() {
 }
 
 function Header() {
-  return(
-    <div className='header'>
-
-      <div className='left-header'>
-        nutnutnutnutnutnutnutnutnttntntntsjdknut
+  return (
+    <div className="row">
+      <div className="col-9">...</div> 
+      <div className='col-2'>
+        <img className='logo-button' src={logo} alt='nut' onClick={onLogoClick}/>
       </div>
-
-      <button className='logo-button'/>
-      
-      <div className='right-header'>
-        balls
-      </div>
-
+      <div className="col-9">...</div>
     </div>
   );
 }
