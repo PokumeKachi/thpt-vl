@@ -1,16 +1,27 @@
 import './Components.css';
 import logo from './assets/logo.svg';
+import closeButton from './assets/icons/close.svg'
 
-function onLogoClick() {
+function onLogoClick(event) {
+  let button = event.target;
+
+  if (button.classList.contains('logo-button-hidden')) {
+    button.classList.remove('logo-button-hidden'); 
+  } else {
+    button.classList.add('logo-button-hidden');
+  }
   console.log('clicked!');
 }
 
 function Header() {
   return (
-    <div className="row">
+    <div className="row header-row">
       <div className="col-9">...</div> 
       <div className='col-2'>
-        <img className='logo-button' src={logo} alt='nut' onClick={onLogoClick}/>
+        <div className='header-container'>
+          <img className='logo-button' src={logo} alt='menu' onClick={onLogoClick}/>
+          <img id='close-button' className='close-button' src={closeButton} alt='close'/>
+        </div>
       </div>
       <div className="col-9">...</div>
     </div>
