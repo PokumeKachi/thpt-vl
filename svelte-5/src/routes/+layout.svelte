@@ -1,35 +1,69 @@
 <script>
   import { onMount } from 'svelte';
-  import logo from '$lib/img/logo.svg';
-  import close from '$lib/img/icons/close.svg';
-
-  import home from '$lib/img/icons/home.svg';
 
   import './layout.css';
   import '$lib/style.css';
 
+  import logo from '$lib/img/logo.svg';
+  import close from '$lib/img/close.svg';
+
+  import home from '$lib/img/icons/home.svg';
+  import news from '$lib/img/icons/news.svg';
+  import event from '$lib/img/icons/event.svg';
+  import resource from '$lib/img/icons/resource.svg';
+
+  import chat from '$lib/img/icons/chat.svg';
+  import setting from '$lib/img/icons/setting.svg';
+  import about from '$lib/img/icons/about.svg';
+
+  const icons = {
+    'home': home,
+    'news': news,
+    'event': event,
+    'resource': resource,
+    'chat': chat,
+    'setting': setting,
+    'about': about,
+  };
+
+  const iconNames = Object.keys(icons);
+
   let clickDebounce = false;
   let menuOpened = false;
-  const icons = []
 
-  function iconToggle() {
-    icons.forEach(icon => {
-      icon.classList.toggle('hidden-icon');
-    });
+  const iconX = new Array(iconNames.length).fill(0);
+  const iconY = new Array(iconNames.length).fill(0);
+
+  function iconPosFormula(index,isOpened) {
+    const duoIndex = Math.floor((index + 1)/2);
+
+    const startY = -250.0;
+    const alpha = duoIndex/5.7;
+
+    iconX[index] = Math.sin(alpha * 3.14) * startY * (index % 2 ? 1 : -1);
+    iconY[index] = Math.cos(alpha * 3.14) * startY;
+
+    iconX[index] *= isOpened;
+    iconY[index] *= isOpened;
+  }
+
+  function iconToggle(isOpened) {
+    const startY = -175;
+    const stepY = 50;
+    iconNames.forEach((icon, index) => iconPosFormula(index,isOpened));
   }
 
   function appearHandler(event) {
     if (event.animationName === 'out') {
       const button = event.target;
-      button.classList.remove('hidden');
+      button.classList.remove('hidden-button');
 
       if (menuOpened) {
         button.src = close;
-        iconToggle();
+        iconToggle(1);
       } else {
         button.src = logo;
       }
-
 
       clickDebounce = false
     }
@@ -42,45 +76,23 @@
 
     const button = event.target;
 
-    button.classList.add('hidden');
+    button.classList.add('hidden-button');
 
-    if (!menuOpened) iconToggle();
+    if (!menuOpened) iconToggle(0);
 
     button.addEventListener('animationend',appearHandler)
   }
 
-  function main() {
-    document.querySelectorAll('.icon').forEach(icon => {
-      icons.push(icon);
-    });;
-  }
-
-  onMount(main);
+  onMount(() => {
+  })
 </script>
 
-<div class='img-container noclick'>
-  <img class='icon home-icon hidden-icon' src={home} alt='home'/>
-</div>
+<div class='header'>
+  {#each Object.entries(icons) as [alt,src], index}
+    <img class='icon' style='transform: translate({iconX[index]}%,{iconY[index]}%);' {src} {alt}/>
+  {/each}
 
-<div class='img-container'>
   <img on:click={logoClick} class='logo-button' src={logo} alt='menu'/>
 </div>
-
-<style>
-  .home-icon {
-    transition: all .3s cubic-bezier(.7,.7,0,1);
-    position: absolute;
-    transform: translate(-150%,-50%);
-
-    aspect-ratio: 1;
-
-    background-color: #529913;
-    border-radius: 50%;
-  }
-
-  .hidden-icon {
-    transform: translate(0,0);
-  }
-</style>
 
 <slot></slot>
