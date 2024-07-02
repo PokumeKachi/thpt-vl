@@ -1,0 +1,3 @@
+[submodule "thpt-vl-frontend"]
+	path = thpt-vl-frontend
+	url = https://github.com/PokumeKachi/thpt-vl-frontend
