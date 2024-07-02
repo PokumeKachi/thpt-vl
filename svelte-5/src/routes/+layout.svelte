@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import logo from '$lib/img/logo.svg';
   import close from '$lib/img/icons/close.svg';
 
@@ -9,6 +10,30 @@
 
   let clickDebounce = false;
   let menuOpened = false;
+  const icons = []
+
+  function iconToggle() {
+    icons.forEach(icon => {
+      icon.classList.toggle('hidden-icon');
+    });
+  }
+
+  function appearHandler(event) {
+    if (event.animationName === 'out') {
+      const button = event.target;
+      button.classList.remove('hidden');
+
+      if (menuOpened) {
+        button.src = close;
+        iconToggle();
+      } else {
+        button.src = logo;
+      }
+
+
+      clickDebounce = false
+    }
+  }
 
   function logoClick(event) {
     if (clickDebounce) return;
@@ -19,28 +44,22 @@
 
     button.classList.add('hidden');
 
-    function appearHandler(event) {
-      if (event.animationName === 'out') {
-        button.classList.remove('hidden');
+    if (!menuOpened) iconToggle();
 
-        if (menuOpened) {
-          button.src = close;
-
-
-        } else {
-          button.src = logo;
-        }
-
-        clickDebounce = false
-      }
-    }
-
-    button.addEventListener('animationend',appearHandler);
+    button.addEventListener('animationend',appearHandler)
   }
+
+  function main() {
+    document.querySelectorAll('.icon').forEach(icon => {
+      icons.push(icon);
+    });;
+  }
+
+  onMount(main);
 </script>
 
 <div class='img-container noclick'>
-  <img class='home-icon' src={home} alt='home'/>
+  <img class='icon home-icon hidden-icon' src={home} alt='home'/>
 </div>
 
 <div class='img-container'>
@@ -48,22 +67,19 @@
 </div>
 
 <style>
-  .hidden-icon {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-
   .home-icon {
-    transition: all .2s cubic-bezier(.7,.7,0,1);
-    position: relative;
-    top: 5%;
-    right: 10%;
+    transition: all .3s cubic-bezier(.7,.7,0,1);
+    position: absolute;
+    transform: translate(-150%,-50%);
+
     aspect-ratio: 1;
 
     background-color: #529913;
     border-radius: 50%;
+  }
+
+  .hidden-icon {
+    transform: translate(0,0);
   }
 </style>
 

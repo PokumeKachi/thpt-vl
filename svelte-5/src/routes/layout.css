@@ -1,11 +1,11 @@
 @keyframes in {
-  from {height: 25%;}
+  from {height: 50%;}
   to {height: 100%;}
 }
 
 @keyframes out {
   from {height: 100%;}
-  to {height: 25%;}
+  to {height: 50%;}
 }
 
 .noclick {
@@ -27,6 +27,7 @@
 
 .icon-container {
   border: 1px solid red;
+  position: relative;
 
   height: 100%;
   aspect-ratio: 1;
@@ -41,7 +42,7 @@
 
   border-radius: 50%;
 
-  background-color: #529913;
+  background-color: #52AA55;
 
   height: 100%;
 
