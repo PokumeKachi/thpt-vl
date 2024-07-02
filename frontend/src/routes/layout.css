@@ -52,9 +52,13 @@
   transition: all .3s cubic-bezier(.7,.7,0,1);
 
   position: absolute;
-  height: 35%;
+  height: 25%;
 
   fill: red;
   background-color: #529913;
   z-index: 4;
+}
+
+.icon:hover {
+  transform: scale(1.5);
 }

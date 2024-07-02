@@ -37,7 +37,7 @@
   function iconPosFormula(index,isOpened) {
     const duoIndex = Math.floor((index + 1)/2);
 
-    const startY = -250.0;
+    const startY = -400.0;
     const alpha = duoIndex/5.7;
 
     iconX[index] = Math.sin(alpha * 3.14) * startY * (index % 2 ? 1 : -1);
@@ -83,7 +83,12 @@
     button.addEventListener('animationend',appearHandler)
   }
 
+  function step(timeStamp) {
+    requestAnimationFrame(step);
+  }
+
   onMount(() => {
+    requestAnimationFrame(step);
   })
 </script>
 

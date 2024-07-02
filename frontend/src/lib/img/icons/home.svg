@@ -26,10 +26,10 @@
      inkscape:zoom="8.9824658"
      inkscape:cx="31.338833"
      inkscape:cy="38.964802"
-     inkscape:window-width="1366"
-     inkscape:window-height="726"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
      inkscape:window-x="0"
-     inkscape:window-y="42"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
@@ -46,16 +46,16 @@
        r="8.3364105" />
     <path
        id="path4"
-       style="fill-opacity:0;stroke:#ffffff;stroke-width:0.529;stroke-dasharray:none;stroke-linecap:round;stroke-linejoin:round"
-       inkscape:transform-center-y="-0.68755154"
-       d="m 8.4666562,4.4397815 4.0748158,3.399268 V 12.517691 H 4.3918623 V 7.8390491 Z"
+       style="fill-opacity:0;stroke:#ffffff;stroke-width:0.901619;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       inkscape:transform-center-y="-0.73398044"
+       d="M 8.4666555,3.6257957 12.778358,7.2546114 V 12.249195 H 4.1549762 V 7.2546109 Z"
        sodipodi:nodetypes="cccccc" />
     <rect
-       style="fill:none;stroke:#ffffff;stroke-width:0.433474;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        id="rect1"
        width="2.7415261"
        height="2.7415264"
        x="7.0959034"
-       y="9.7417374" />
+       y="9.2604151" />
   </g>
 </svg>
