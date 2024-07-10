@@ -3,6 +3,6 @@ all:
 
 build:
 	firebase deploy
-	git add .
+	git add --all
 	git commit -a
 	git push
