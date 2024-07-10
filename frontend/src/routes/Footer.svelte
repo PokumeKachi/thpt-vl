@@ -38,16 +38,26 @@
   let menuOpened = false;
   let iconsShowed = false;
   let clickDisabled = false;
-  let bufferClose = false;
   let pressed = false;
   let animating = false;
+
   let selectedIndex = -1;
 
   let mainButton = null;
+  let mainButtonIcon = logo;
 
   const squared = x => x * x;
   const lerp = (a, b, t) => a + (b - a) * t;
   const smoothstep = x => -2 * Math.pow(x, 3) + 3 * Math.pow(x, 2);
+  const dist_squared = (obj0, obj1) => squared(obj0.x - obj1.x) + squared(obj0.y - obj1.y);
+
+  const getPos = (element) => {
+    const { top, left, bottom, right } = element.getBoundingClientRect();
+    return {
+      x: (left + right) / 2,
+      y: (top + bottom) / 2,
+    };
+  }
 
   const schedule = (interval, callback, condition) => {
     if (!condition) {
@@ -61,25 +71,30 @@
     const elements = document.querySelectorAll('.icon');
 
     const low = 1e3;
-    const high = 2e4;
+    const high = 9e3;
+
+    const startSize = 25;
+    const endSize = 75;
 
     let min_dist, min_index = -1;
 
     elements.forEach(element => {
-      const { top, left, bottom, right } = element.getBoundingClientRect();
-      const x = (left + right) / 2;
-      const y = (top + bottom) / 2;
+      const { right, left } = element.getBoundingClientRect();
+      const pos = getPos(element);
 
       const index = parseInt(element.getAttribute('index'));
       const ratio = (right - left) / iconSize[index];
-      const distance = (squared(mouse.x - x) + squared(mouse.y - y)) / ratio;
+      const distance = (dist_squared(pos, mouse)) / ratio;
 
       if (min_index == -1 || distance / ratio < min_dist) {
         min_dist = distance;
         min_index = index;
       }
 
-      const size = (distance < low) ? 100 : (distance > high ? 25 : (25 + 75 * (high - distance) / (high - low)))
+      const size = (distance < low) ? endSize :
+        distance > high ? startSize :
+          startSize + (endSize - startSize) * (high - distance) / (high - low)
+
       iconSize[index] = size;
     });
 
@@ -90,28 +105,64 @@
 
     const reset = () => {
       elements[selectedIndex].classList.remove('icon-hover');
+      selectedIndex = -1;
     }
 
     if (min_dist < (low + (high - low) * 0.7)) {
       if (selectedIndex != min_index) {
-        if (selectedIndex != -1) reset();
+        if (selectedIndex != -1) {
+          reset();
+        }
         set();
       }
       mainButton.classList.remove('icon-hover');
     } else {
-      if (selectedIndex != -1) reset();
+      if (selectedIndex != -1) {
+        reset();
+      }
       mainButton.classList.add('icon-hover');
     }
   }
 
   const mouseLeaveHandler = () => mouseUp({ target: mainButton });
-  const updateMousePos = ({ clientX, clientY }) => { mouse.x = clientX, mouse.y = clientY; };
+  const updateMousePos = ({ clientX, clientY }) => {
+    const elements = document.querySelectorAll('.icon');
+    mouse.x = clientX, mouse.y = clientY;
+
+    let mainPos = getPos(mainButton), pos = getPos(elements[0]);
+
+    const distance = Math.sqrt(dist_squared(mainPos, mouse));
+    const baseDistance = Math.sqrt(dist_squared(mainPos, pos));
+
+    if (baseDistance === 0) return;
+
+    const ratio = distance / baseDistance; 
+
+    if (ratio > 1) {
+      mouse.x = mainPos.x + -(mainPos.x - mouse.x) / ratio;
+      mouse.y = mainPos.y + -(mainPos.y - mouse.y) / ratio;
+    }
+  };
+  const updateTouchPos = ( { touches }) => {
+    const touch = touches[0];
+    
+    if (touch) {
+      updateMousePos(touch);
+    }
+  };
 
   function main() {
     requestAnimationFrame(step);
 
+    document.querySelectorAll('.footer').forEach(element => {
+      element.classList.remove('hidden');
+    });
+
     window.onmouseup = mouseLeaveHandler;
+    window.ontouchend = mouseLeaveHandler;
+    
     window.onmousemove = updateMousePos;
+    window.ontouchmove = updateTouchPos;
 
     mainButton = document.getElementById('main-button');
   }
@@ -124,8 +175,8 @@
   function iconPosFormula(index,isOpened) {
     const duoIndex = Math.floor((index + 1)/2);
 
-    const startY = -200.0;
-    const alpha = duoIndex/5.7;
+    const startY = -135.0;
+    const alpha = duoIndex/6;
 
     iconX[index] = Math.sin(alpha * 3.14) * startY * (index % 2 ? 1 : -1);
     iconY[index] = Math.cos(alpha * 3.14) * startY;
@@ -143,7 +194,7 @@
 
   function showMenu(menuButton) {
     menuButton.classList.remove('hidden-button');
-    menuButton.src = menuOpened ? close : logo;
+    mainButtonIcon = menuOpened ? close : logo;
     if (menuOpened) iconToggle(1);
   }
 
@@ -177,7 +228,6 @@
   function mouseDown({ target }) {
     if (clickDisabled || menuOpened) return;
     pressed = true;
-    //document.onmouseleave = mouseLeaveHandler;
     menuInit(target);
   }
 
@@ -190,22 +240,22 @@
 
 </script>
 
-<div class='footer'>
+<div class='footer hidden'>
   {#each Object.entries(icons) as [alt,src], index}
-    <div style='transform: translate( { iconX[index] }%, { iconY[index] }% )' class='icon-container noclick' >
-      <img style='height: { iconSize[index] }%' class='icon' {src} {alt} {index}/>
+    <div
+      style='transform: translate( { iconX[index] }%, { iconY[index] }% )' class='icon-container noclick' >
+      <img
+        style='height: { iconSize[index] }%' class='icon' {src} {alt} {index}/>
     </div>
   {/each}
 
   <div class='img-container'>
-    <img style='height: { (menuOpened && !animating) ? iconSize[iconNames.length] : 'auto' }%' id='main-button' class='main-button' src={logo} alt='menu' index={iconNames.length}
+    <input type='button' value='yea'
+      style='height: { (menuOpened && !animating) ? iconSize[iconNames.length] : "auto" }%; background-image: url({ mainButtonIcon })'
+      id='main-button' class='main-button' index={iconNames.length}
       on:animationend={animationEnd}
       on:mousedown={mouseDown}
+      on:touchstart={mouseDown}
       />
   </div>
-
 </div>
-
-<style>
-
-</style>

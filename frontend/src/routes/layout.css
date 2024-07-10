@@ -53,13 +53,18 @@ img {
 }
 
 .main-button,.icon {
+  transition: background-color .2s;
   border-radius: 50%;
   aspect-ratio: 1;
   border: 2px solid white;
 }
 
 .main-button {
-  transition: background-color .2s;
+  text-indent: -999em;
+  overflow: hidden;
+  text-align: left;
+  background-size: cover;
+
   background-color: #52AA55;
   height: 100%;
   animation: in .2s cubic-bezier(.7,.7,0,1);
@@ -78,4 +83,15 @@ img {
 .icon-hover {
   filter: brightness(0) saturate(100%) invert(64%) sepia(54%) saturate(6016%) hue-rotate(59deg) brightness(91%) contrast(85%);
   background-color: rgba(0,0,0,0);
+}
+
+.mouse {
+  position: absolute;
+  width: 100px;
+  aspect-ratio: 1;
+  background-color: red;
+}
+
+.hidden {
+  opacity: 0;
 }
