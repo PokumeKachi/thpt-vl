@@ -33,9 +33,31 @@ img {
   position: fixed;
 
   top: 90%;
-  bottom: -3%;
+  bottom: -3.5%;
   left: 0;
   right: 0;
+}
+
+.icon-title {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  border: 1px solid red;
+
+  position: fixed;
+
+  top: 85%;
+  bottom: 10%;
+  left: 0;
+  right: 0;
+
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1.5rem;
+
+  color: var(--lightest);
 }
 
 .icon-container,.img-container {
@@ -53,7 +75,7 @@ img {
 }
 
 .main-button,.icon {
-  transition: background-color .2s;
+  transition: background-color .25s;
   border-radius: 50%;
   aspect-ratio: 1;
   border: 2px solid white;
@@ -65,7 +87,7 @@ img {
   text-align: left;
   background-size: cover;
 
-  background-color: #52AA55;
+  background-color: var(--lighter);
   height: 100%;
   animation: in .2s cubic-bezier(.7,.7,0,1);
 }
@@ -77,11 +99,11 @@ img {
 }
 
 .icon {
-  background-color: #529913;
+  background-color: var(--lighter);
 }
 
 .icon-hover {
-  filter: brightness(0) saturate(100%) invert(64%) sepia(54%) saturate(6016%) hue-rotate(59deg) brightness(91%) contrast(85%);
+  filter: brightness(0) saturate(100%) invert(72%) sepia(18%) saturate(642%) hue-rotate(71deg) brightness(89%) contrast(82%);
   background-color: rgba(0,0,0,0);
 }
 

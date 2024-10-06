@@ -1,3 +1,13 @@
+:root {
+  --lightest: #D0F0D0;
+  --lighter: #80B080;
+  --light: #70A060;
+  --normal: #509050;
+  --dark: #608040;
+  --darker: #607040;
+  --darkest: #205010;
+}
+
 * {
   box-sizing: border-box;
 }

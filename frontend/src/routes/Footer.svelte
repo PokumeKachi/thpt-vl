@@ -4,6 +4,7 @@
 
   import './layout.css';
   import '$lib/style.css';
+  import { localize } from '$lib/index.js';
 
   import logo from '$lib/img/logo.svg';
   import close from '$lib/img/close.svg';
@@ -43,8 +44,10 @@
 
   let selectedIndex = -1;
 
-  let mainButton = null;
+  let mainButton;
   let mainButtonIcon = logo;
+  
+  let iconButtons;
 
   const squared = x => x * x;
   const lerp = (a, b, t) => a + (b - a) * t;
@@ -59,17 +62,7 @@
     };
   }
 
-  const schedule = (interval, callback, condition) => {
-    if (!condition) {
-      window.setTimeout(() => schedule(interval, callback, condition), interval);
-    } else {
-      callback();
-    }
-  }
-
   const selectionHandler = () => {
-    const elements = document.querySelectorAll('.icon');
-
     const low = 1e3;
     const high = 9e3;
 
@@ -78,15 +71,15 @@
 
     let min_dist, min_index = -1;
 
-    elements.forEach(element => {
-      const { right, left } = element.getBoundingClientRect();
-      const pos = getPos(element);
+    iconButtons.forEach(iconButton => {
+      const { right, left } = iconButton.getBoundingClientRect();
+      const pos = getPos(iconButton);
 
-      const index = parseInt(element.getAttribute('index'));
+      const index = parseInt(iconButton.getAttribute('index'));
       const ratio = (right - left) / iconSize[index];
       const distance = (dist_squared(pos, mouse)) / ratio;
 
-      if (min_index == -1 || distance / ratio < min_dist) {
+      if (min_index == -1 || distance < min_dist) {
         min_dist = distance;
         min_index = index;
       }
@@ -100,11 +93,11 @@
 
     const set = () => {
       selectedIndex = min_index;
-      elements[selectedIndex].classList.add('icon-hover');
+      iconButtons[selectedIndex].classList.add('icon-hover');
     }
 
     const reset = () => {
-      elements[selectedIndex].classList.remove('icon-hover');
+      iconButtons[selectedIndex].classList.remove('icon-hover');
       selectedIndex = -1;
     }
 
@@ -126,10 +119,9 @@
 
   const mouseLeaveHandler = () => mouseUp({ target: mainButton });
   const updateMousePos = ({ clientX, clientY }) => {
-    const elements = document.querySelectorAll('.icon');
     mouse.x = clientX, mouse.y = clientY;
 
-    let mainPos = getPos(mainButton), pos = getPos(elements[0]);
+    let mainPos = getPos(mainButton), pos = getPos(iconButtons[0]);
 
     const distance = Math.sqrt(dist_squared(mainPos, mouse));
     const baseDistance = Math.sqrt(dist_squared(mainPos, pos));
@@ -165,6 +157,7 @@
     window.ontouchmove = updateTouchPos;
 
     mainButton = document.getElementById('main-button');
+    iconButtons = document.querySelectorAll('.icon');
   }
 
   function step(timeStamp) {
@@ -195,7 +188,24 @@
   function showMenu(menuButton) {
     menuButton.classList.remove('hidden-button');
     mainButtonIcon = menuOpened ? close : logo;
-    if (menuOpened) iconToggle(1);
+    if (menuOpened) {
+      iconToggle(1);
+    } else {
+      document.querySelectorAll('.icon-hover').forEach(element => {
+        element.classList.remove('icon-hover')        
+      });
+      if (selectedIndex != -1) {
+        switch (selectedIndex) {
+          case 0:
+            window.location.href = '/';
+
+
+          default:
+            console.log('what fucking index is this!');
+        }
+      }
+      selectedIndex = -1;
+    }
   }
 
   function onMenuShown(menuButton) {
@@ -248,6 +258,10 @@
         style='height: { iconSize[index] }%' class='icon' {src} {alt} {index}/>
     </div>
   {/each}
+
+  <div class='icon-title'>
+    {(selectedIndex === -1) ? '' : localize(iconNames[selectedIndex])}
+  </div>
 
   <div class='img-container'>
     <input type='button' value='yea'
